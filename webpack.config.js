@@ -1,3 +1,7 @@
-module.exports = {
-  externals: [],
+module.exports = function (options) {
+  return {
+    ...options,
+    resolve: { ...options.resolve, extensionAlias: { '.js': ['.ts', '.js'] } },
+    externals: [],
+  };
 };
