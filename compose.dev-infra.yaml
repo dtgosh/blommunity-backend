@@ -2,6 +2,7 @@ services:
   blommunity-db:
     image: postgres:18-alpine
     container_name: blommunity-db
+    restart: always
     env_file:
       - .env
     ports:
