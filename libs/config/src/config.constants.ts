@@ -6,6 +6,7 @@ import { Env } from './config.enums';
 import { ValidatedEnv } from './config.interfaces';
 import appConfig from './configs/app.config';
 import dbConfig from './configs/db.config';
+import loggerConfig from './configs/logger.config';
 
 expand(dotenv.config());
 
@@ -30,7 +31,7 @@ export const validatedEnv = Joi.attempt(
   { allowUnknown: true, stripUnknown: true },
 );
 
-const isDevEnv = validatedEnv.NODE_ENV === Env.DEV;
+export const isDevEnv = validatedEnv.NODE_ENV === Env.DEV;
 
 export const configModuleOptions: ConfigModuleOptions = {
   cache: true,
@@ -39,6 +40,6 @@ export const configModuleOptions: ConfigModuleOptions = {
   skipProcessEnv: true,
   validationSchema,
   validationOptions: { abortEarly: true },
-  load: [appConfig, dbConfig],
+  load: [appConfig, dbConfig, loggerConfig],
   expandVariables: true,
 };
