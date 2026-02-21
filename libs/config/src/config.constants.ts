@@ -5,8 +5,8 @@ import * as Joi from 'joi';
 import { Env } from './config.enums';
 import { ValidatedEnv } from './config.interfaces';
 import appConfig from './configs/app.config';
+import cacheConfig from './configs/cache.config';
 import dbConfig from './configs/db.config';
-import loggerConfig from './configs/logger.config';
 
 expand(dotenv.config());
 
@@ -17,11 +17,12 @@ const validationSchema = Joi.object<ValidatedEnv>({
   DB_HOST: Joi.string().optional(),
   DB_PORT: Joi.number().port().optional(),
   DB_SCHEMA: Joi.string().optional(),
-  DATABASE_URL: Joi.string().uri().required(),
   NODE_ENV: Joi.string()
     .valid(...Object.values(Env))
     .required(),
   PORT: Joi.number().port().required(),
+  DATABASE_URL: Joi.string().uri().required(),
+  CACHE_URL: Joi.string().uri().required(),
 });
 
 export const validatedEnv = Joi.attempt(
@@ -31,7 +32,7 @@ export const validatedEnv = Joi.attempt(
   { allowUnknown: true, stripUnknown: true },
 );
 
-export const isDevEnv = validatedEnv.NODE_ENV === Env.DEV;
+const isDevEnv = validatedEnv.NODE_ENV === Env.DEV;
 
 export const configModuleOptions: ConfigModuleOptions = {
   cache: true,
@@ -40,6 +41,6 @@ export const configModuleOptions: ConfigModuleOptions = {
   skipProcessEnv: true,
   validationSchema,
   validationOptions: { abortEarly: true },
-  load: [appConfig, dbConfig, loggerConfig],
-  expandVariables: true,
+  load: [appConfig, cacheConfig, dbConfig],
+  expandVariables: !isDevEnv,
 };

@@ -1,12 +1,11 @@
 {
-  "name": "blommunity-backend",
+  "name": "blommunity",
   "version": "0.0.1",
-  "description": "블로그 커뮤니티 서비스 백엔드",
+  "description": "블로그 커뮤니티 서비스",
   "author": "dtgosh",
   "private": false,
   "license": "MIT",
   "scripts": {
-    "postinstall": "npx prisma generate",
     "build": "nest build",
     "build:all": "nest build --all",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
@@ -23,17 +22,21 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e:api": "jest --config ./apps/api/test/jest-e2e.json",
+    "postinstall": "npx prisma generate",
     "prepare": "husky",
     "commit": "cz",
     "release": "commit-and-tag-version"
   },
   "dependencies": {
+    "@keyv/valkey": "^1.0.11",
+    "@nestjs/cache-manager": "^3.1.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/adapter-pg": "^7.4.0",
     "@prisma/client": "^7.4.0",
+    "cache-manager": "^7.2.8",
     "joi": "^18.0.2",
     "nest-commander": "^3.20.1",
     "nest-winston": "^1.10.2",
@@ -98,6 +101,14 @@
       "^@app/config(|/.*)$": "<rootDir>/libs/config/src/$1",
       "^@app/db(|/.*)$": "<rootDir>/libs/db/src/$1",
       "^@app/util(|/.*)$": "<rootDir>/libs/util/src/$1"
+    }
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@commitlint/cz-commitlint"
     }
   }
 }

@@ -7,7 +7,8 @@ export interface ValidatedEnv {
   DB_HOST?: string;
   DB_PORT?: number;
   DB_SCHEMA?: string;
-  DATABASE_URL: string;
   NODE_ENV: Env;
   PORT: number;
+  DATABASE_URL: string;
+  CACHE_URL: string;
 }

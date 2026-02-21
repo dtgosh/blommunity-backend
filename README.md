@@ -1,8 +1,8 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-# Blommunity Backend
+# Blommunity
 
-블로그 커뮤니티 서비스의 백엔드 서버입니다.
+블로그 커뮤니티 서비스입니다.
 
 ## Tech Stack
 

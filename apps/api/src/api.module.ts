@@ -1,14 +1,24 @@
 import { configModuleOptions } from '@app/config';
 import { DbModule } from '@app/db';
 import { UtilModule } from '@app/util';
+import KeyvValkey from '@keyv/valkey';
+import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { ApiController } from './api.controller';
-import { ApiService } from './api.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule.forRoot(configModuleOptions), DbModule, UtilModule],
-  controllers: [ApiController],
-  providers: [Logger, ApiService],
+  imports: [
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        stores: new KeyvValkey(configService.getOrThrow<string>('cache.url')),
+      }),
+      inject: [ConfigService],
+    }),
+    ConfigModule.forRoot(configModuleOptions),
+    DbModule,
+    UtilModule,
+  ],
+  providers: [Logger],
 })
 export class ApiModule {}
